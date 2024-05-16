@@ -1,0 +1,899 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>API Edi Covariance</title><style>
+    /* cspell:disable-file */
+    /* webkit printing magic: print all background colors */
+    html {
+        -webkit-print-color-adjust: exact;
+    }
+    * {
+        box-sizing: border-box;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    @media only screen {
+        body {
+            margin: 2em auto;
+            max-width: 900px;
+            color: rgb(55, 53, 47);
+        }
+    }
+    
+    body {
+        line-height: 1.5;
+        white-space: pre-wrap;
+    }
+    
+    a,
+    a.visited {
+        color: inherit;
+        text-decoration: underline;
+    }
+    
+    .pdf-relative-link-path {
+        font-size: 80%;
+        color: #444;
+    }
+    
+    h1,
+    h2,
+    h3 {
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+    
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-top: 0;
+        margin-bottom: 0.75em;
+    }
+    
+    h1 {
+        font-size: 1.875rem;
+        margin-top: 1.875rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+        margin-top: 1.25rem;
+    }
+    
+    .source {
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        padding: 1.5em;
+        word-break: break-all;
+    }
+    
+    .callout {
+        border-radius: 3px;
+        padding: 1rem;
+    }
+    
+    figure {
+        margin: 1.25em 0;
+        page-break-inside: avoid;
+    }
+    
+    figcaption {
+        opacity: 0.5;
+        font-size: 85%;
+        margin-top: 0.5em;
+    }
+    
+    mark {
+        background-color: transparent;
+    }
+    
+    .indented {
+        padding-left: 1.5em;
+    }
+    
+    hr {
+        background: transparent;
+        display: block;
+        width: 100%;
+        height: 1px;
+        visibility: visible;
+        border: none;
+        border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+    }
+    
+    img {
+        max-width: 100%;
+    }
+    
+    @media only print {
+        img {
+            max-height: 100vh;
+            object-fit: contain;
+        }
+    }
+    
+    @page {
+        margin: 1in;
+    }
+    
+    .collection-content {
+        font-size: 0.875rem;
+    }
+    
+    .column-list {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .column {
+        padding: 0 1em;
+    }
+    
+    .column:first-child {
+        padding-left: 0;
+    }
+    
+    .column:last-child {
+        padding-right: 0;
+    }
+    
+    .table_of_contents-item {
+        display: block;
+        font-size: 0.875rem;
+        line-height: 1.3;
+        padding: 0.125rem;
+    }
+    
+    .table_of_contents-indent-1 {
+        margin-left: 1.5rem;
+    }
+    
+    .table_of_contents-indent-2 {
+        margin-left: 3rem;
+    }
+    
+    .table_of_contents-indent-3 {
+        margin-left: 4.5rem;
+    }
+    
+    .table_of_contents-link {
+        text-decoration: none;
+        opacity: 0.7;
+        border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+    }
+    
+    table,
+    th,
+    td {
+        border: 1px solid rgba(55, 53, 47, 0.09);
+        border-collapse: collapse;
+    }
+    
+    table {
+        border-left: none;
+        border-right: none;
+    }
+    
+    th,
+    td {
+        font-weight: normal;
+        padding: 0.25em 0.5em;
+        line-height: 1.5;
+        min-height: 1.5em;
+        text-align: left;
+    }
+    
+    th {
+        color: rgba(55, 53, 47, 0.6);
+    }
+    
+    ol,
+    ul {
+        margin: 0;
+        margin-block-start: 0.6em;
+        margin-block-end: 0.6em;
+    }
+    
+    li > ol:first-child,
+    li > ul:first-child {
+        margin-block-start: 0.6em;
+    }
+    
+    ul > li {
+        list-style: disc;
+    }
+    
+    ul.to-do-list {
+        padding-inline-start: 0;
+    }
+    
+    ul.to-do-list > li {
+        list-style: none;
+    }
+    
+    .to-do-children-checked {
+        text-decoration: line-through;
+        opacity: 0.375;
+    }
+    
+    ul.toggle > li {
+        list-style: none;
+    }
+    
+    ul {
+        padding-inline-start: 1.7em;
+    }
+    
+    ul > li {
+        padding-left: 0.1em;
+    }
+    
+    ol {
+        padding-inline-start: 1.6em;
+    }
+    
+    ol > li {
+        padding-left: 0.2em;
+    }
+    
+    .mono ol {
+        padding-inline-start: 2em;
+    }
+    
+    .mono ol > li {
+        text-indent: -0.4em;
+    }
+    
+    .toggle {
+        padding-inline-start: 0em;
+        list-style-type: none;
+    }
+    
+    /* Indent toggle children */
+    .toggle > li > details {
+        padding-left: 1.7em;
+    }
+    
+    .toggle > li > details > summary {
+        margin-left: -1.1em;
+    }
+    
+    .selected-value {
+        display: inline-block;
+        padding: 0 0.5em;
+        background: rgba(206, 205, 202, 0.5);
+        border-radius: 3px;
+        margin-right: 0.5em;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
+        white-space: nowrap;
+    }
+    
+    .collection-title {
+        display: inline-block;
+        margin-right: 1em;
+    }
+    
+    .page-description {
+        margin-bottom: 2em;
+    }
+    
+    .simple-table {
+        margin-top: 1em;
+        font-size: 0.875rem;
+        empty-cells: show;
+    }
+    .simple-table td {
+        height: 29px;
+        min-width: 120px;
+    }
+    
+    .simple-table th {
+        height: 29px;
+        min-width: 120px;
+    }
+    
+    .simple-table-header-color {
+        background: rgb(247, 246, 243);
+        color: black;
+    }
+    .simple-table-header {
+        font-weight: 500;
+    }
+    
+    time {
+        opacity: 0.5;
+    }
+    
+    .icon {
+        display: inline-block;
+        max-width: 1.2em;
+        max-height: 1.2em;
+        text-decoration: none;
+        vertical-align: text-bottom;
+        margin-right: 0.5em;
+    }
+    
+    img.icon {
+        border-radius: 3px;
+    }
+    
+    .user-icon {
+        width: 1.5em;
+        height: 1.5em;
+        border-radius: 100%;
+        margin-right: 0.5rem;
+    }
+    
+    .user-icon-inner {
+        font-size: 0.8em;
+    }
+    
+    .text-icon {
+        border: 1px solid #000;
+        text-align: center;
+    }
+    
+    .page-cover-image {
+        display: block;
+        object-fit: cover;
+        width: 100%;
+        max-height: 30vh;
+    }
+    
+    .page-header-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .page-header-icon-with-cover {
+        margin-top: -0.72em;
+        margin-left: 0.07em;
+    }
+    
+    .page-header-icon img {
+        border-radius: 3px;
+    }
+    
+    .link-to-page {
+        margin: 1em 0;
+        padding: 0;
+        border: none;
+        font-weight: 500;
+    }
+    
+    p > .user {
+        opacity: 0.5;
+    }
+    
+    td > .user,
+    td > time {
+        white-space: nowrap;
+    }
+    
+    input[type="checkbox"] {
+        transform: scale(1.5);
+        margin-right: 0.6em;
+        vertical-align: middle;
+    }
+    
+    p {
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
+    
+    .image {
+        border: none;
+        margin: 1.5em 0;
+        padding: 0;
+        border-radius: 0;
+        text-align: center;
+    }
+    
+    .code,
+    code {
+        background: rgba(135, 131, 120, 0.15);
+        border-radius: 3px;
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        font-size: 85%;
+        tab-size: 2;
+    }
+    
+    code {
+        color: #eb5757;
+    }
+    
+    .code {
+        padding: 1.5em 1em;
+    }
+    
+    .code-wrap {
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+    
+    .code > code {
+        background: none;
+        padding: 0;
+        font-size: 100%;
+        color: inherit;
+    }
+    
+    blockquote {
+        font-size: 1.25em;
+        margin: 1em 0;
+        padding-left: 1em;
+        border-left: 3px solid rgb(55, 53, 47);
+    }
+    
+    .bookmark {
+        text-decoration: none;
+        max-height: 8em;
+        padding: 0;
+        display: flex;
+        width: 100%;
+        align-items: stretch;
+    }
+    
+    .bookmark-title {
+        font-size: 0.85em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 1.75em;
+        white-space: nowrap;
+    }
+    
+    .bookmark-text {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .bookmark-info {
+        flex: 4 1 180px;
+        padding: 12px 14px 14px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    
+    .bookmark-image {
+        width: 33%;
+        flex: 1 1 180px;
+        display: block;
+        position: relative;
+        object-fit: cover;
+        border-radius: 1px;
+    }
+    
+    .bookmark-description {
+        color: rgba(55, 53, 47, 0.6);
+        font-size: 0.75em;
+        overflow: hidden;
+        max-height: 4.5em;
+        word-break: break-word;
+    }
+    
+    .bookmark-href {
+        font-size: 0.75em;
+        margin-top: 0.25em;
+    }
+    
+    .sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+    .code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+    .serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+    .mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+    .pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+    .pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+    .pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+    .pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+    .pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+    .pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+    .pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+    .pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+    .pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+    .pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+    .pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+    .pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+    .pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+    .pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+    .pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+    .pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+    .highlight-default {
+        color: rgba(55, 53, 47, 1);
+    }
+    .highlight-gray {
+        color: rgba(120, 119, 116, 1);
+        fill: rgba(120, 119, 116, 1);
+    }
+    .highlight-brown {
+        color: rgba(159, 107, 83, 1);
+        fill: rgba(159, 107, 83, 1);
+    }
+    .highlight-orange {
+        color: rgba(217, 115, 13, 1);
+        fill: rgba(217, 115, 13, 1);
+    }
+    .highlight-yellow {
+        color: rgba(203, 145, 47, 1);
+        fill: rgba(203, 145, 47, 1);
+    }
+    .highlight-teal {
+        color: rgba(68, 131, 97, 1);
+        fill: rgba(68, 131, 97, 1);
+    }
+    .highlight-blue {
+        color: rgba(51, 126, 169, 1);
+        fill: rgba(51, 126, 169, 1);
+    }
+    .highlight-purple {
+        color: rgba(144, 101, 176, 1);
+        fill: rgba(144, 101, 176, 1);
+    }
+    .highlight-pink {
+        color: rgba(193, 76, 138, 1);
+        fill: rgba(193, 76, 138, 1);
+    }
+    .highlight-red {
+        color: rgba(212, 76, 71, 1);
+        fill: rgba(212, 76, 71, 1);
+    }
+    .highlight-gray_background {
+        background: rgba(241, 241, 239, 1);
+    }
+    .highlight-brown_background {
+        background: rgba(244, 238, 238, 1);
+    }
+    .highlight-orange_background {
+        background: rgba(251, 236, 221, 1);
+    }
+    .highlight-yellow_background {
+        background: rgba(251, 243, 219, 1);
+    }
+    .highlight-teal_background {
+        background: rgba(237, 243, 236, 1);
+    }
+    .highlight-blue_background {
+        background: rgba(231, 243, 248, 1);
+    }
+    .highlight-purple_background {
+        background: rgba(244, 240, 247, 0.8);
+    }
+    .highlight-pink_background {
+        background: rgba(249, 238, 243, 0.8);
+    }
+    .highlight-red_background {
+        background: rgba(253, 235, 236, 1);
+    }
+    .block-color-default {
+        color: inherit;
+        fill: inherit;
+    }
+    .block-color-gray {
+        color: rgba(120, 119, 116, 1);
+        fill: rgba(120, 119, 116, 1);
+    }
+    .block-color-brown {
+        color: rgba(159, 107, 83, 1);
+        fill: rgba(159, 107, 83, 1);
+    }
+    .block-color-orange {
+        color: rgba(217, 115, 13, 1);
+        fill: rgba(217, 115, 13, 1);
+    }
+    .block-color-yellow {
+        color: rgba(203, 145, 47, 1);
+        fill: rgba(203, 145, 47, 1);
+    }
+    .block-color-teal {
+        color: rgba(68, 131, 97, 1);
+        fill: rgba(68, 131, 97, 1);
+    }
+    .block-color-blue {
+        color: rgba(51, 126, 169, 1);
+        fill: rgba(51, 126, 169, 1);
+    }
+    .block-color-purple {
+        color: rgba(144, 101, 176, 1);
+        fill: rgba(144, 101, 176, 1);
+    }
+    .block-color-pink {
+        color: rgba(193, 76, 138, 1);
+        fill: rgba(193, 76, 138, 1);
+    }
+    .block-color-red {
+        color: rgba(212, 76, 71, 1);
+        fill: rgba(212, 76, 71, 1);
+    }
+    .block-color-gray_background {
+        background: rgba(241, 241, 239, 1);
+    }
+    .block-color-brown_background {
+        background: rgba(244, 238, 238, 1);
+    }
+    .block-color-orange_background {
+        background: rgba(251, 236, 221, 1);
+    }
+    .block-color-yellow_background {
+        background: rgba(251, 243, 219, 1);
+    }
+    .block-color-teal_background {
+        background: rgba(237, 243, 236, 1);
+    }
+    .block-color-blue_background {
+        background: rgba(231, 243, 248, 1);
+    }
+    .block-color-purple_background {
+        background: rgba(244, 240, 247, 0.8);
+    }
+    .block-color-pink_background {
+        background: rgba(249, 238, 243, 0.8);
+    }
+    .block-color-red_background {
+        background: rgba(253, 235, 236, 1);
+    }
+    .select-value-color-interactiveBlue { background-color: rgba(35, 131, 226, .07); }
+    .select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+    .select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+    .select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+    .select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+    .select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+    .select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+    .select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+    .select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+    .select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+    .select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+    .select-value-color-pageGlass { background-color: undefined; }
+    .select-value-color-washGlass { background-color: undefined; }
+    
+    .checkbox {
+        display: inline-flex;
+        vertical-align: text-bottom;
+        width: 16;
+        height: 16;
+        background-size: 16px;
+        margin-left: 2px;
+        margin-right: 5px;
+    }
+    
+    .checkbox-on {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+    }
+    
+    .checkbox-off {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+    }
+        
+    </style></head><body><article id="d0ee8fe1-8762-4714-bf63-678e52e14cd2" class="page sans"><header><h1 class="page-title">API Edi Covariance</h1><p class="page-description"></p></header><div class="page-body"><h2 id="a2af8374-4bc3-42e5-a33e-ab0cc2d71cdc" class="">Description</h2><p id="f6d09254-aa7c-4880-ba0a-a149ad41c696" class="">API Edi Covariance Platform memungkinkan Anda untuk mengakses data dan informasi terkait dengan platform kovariansi.</p><p id="9eaa6ca8-ea00-46dd-9f09-01f199477e5c" class="">Istilah singkat :</p><ul id="4437c2d7-2946-490f-9c50-fb50755c912d" class="bulleted-list"><li style="list-style-type:disc">device : merupakan sebuah perangkat untuk mengukur suhu edi covariance</li></ul><ul id="4636d12b-3ca8-41fd-a41d-8b067c7e9e93" class="bulleted-list"><li style="list-style-type:disc">logger : merupakan sebuah perangkat untuk mengirimkan data yang telah dikumpulkan dari device kedalam database</li></ul><h2 id="176f0d1b-85e1-469c-bfb0-a64b0bd2a5f0" class="">Base URL</h2><p id="d6c32443-e57b-4746-85d3-7417a09c14c0" class="">The base URL for all API requests is:</p><p id="3aafe3ba-bac8-4189-b501-73101ce61dc6" class=""><code>http://localhost:3000</code></p><h2 id="2ee94893-39e8-4507-af2b-baba32143037" class="">Endpoints</h2><h3 id="ab954683-36d7-4c66-82b9-e1050b3fa73e" class="">1. Autentikasi</h3><h3 id="0f98acdf-4883-4790-bf88-b0eaa5bf9da9" class=""><code>GET /api</code></h3><h3 id="5c33cd88-2c71-423e-9de6-0290b77659af" class="">Deskripsi :</h3><p id="81e1f3a9-74f9-4640-b1e1-ded3229458db" class="">Mengembalikan pesan selamat datang setelah otentikasi berhasil.</p><h3 id="9264aaa0-2ef8-4f8c-8ace-e39170a760b0" class="">Response</h3><pre id="681ae1d4-2454-4621-9966-1c3a99710693" class="code code-wrap"><code>{
+        &quot;message&quot;: &quot;Hello Dwi API, Authentication Is Now Complete Please Be Silent&quot;
+    }</code></pre><hr id="4491e163-7cf7-4495-9671-fcf101eca61a"/><h3 id="dee8f76c-90fd-4aa6-84b1-51369389e9b1" class="">2. Data terbaru Edcov</h3><h3 id="40dbe269-43f4-4749-8172-4001ba021557" class=""><code>GET /api/edcov1_latest</code></h3><h3 id="bb0244a4-4425-48ce-9327-459450fc27bd" class=""><code>GET /api/edcov2_latest</code></h3><h3 id="4d54eb29-dbf3-4586-8b20-bea3b410042b" class="">Deskripsi :</h3><p id="2e8f45cd-c1b2-4184-a03c-1dc7261aecf3" class="">Mengambil data terbaru dari Edcov1 dan Edcov2.</p><h3 id="51ffd668-817a-4f6b-acb4-93c009105c48" class="">Response</h3><pre id="1eeabac0-633f-4d0a-8d0d-116d8734379d" class="code code-wrap"><code>{
+        &quot;_id&quot;: &quot;651ac4123c10c5eadd51d8b6&quot;,
+        &quot;ts&quot;: &quot;2023-08-27T13:36:58.014Z&quot;,
+        &quot;humanTime&quot;: &quot;2023-08-27T13:36:58.014&quot;,
+        &quot;bmp388Pressure&quot;: 99.74990845,
+        &quot;bmp388Temp&quot;: 35.66460419,
+        &quot;bmp388ApprxAltitude&quot;: 132.0120697,
+        &quot;sht85Humi&quot;: 60.59815216,
+        &quot;sht85Temp&quot;: 31.15777969,
+        &quot;co2&quot;: 389,
+        &quot;ch4&quot;: 0,
+        &quot;H2OSHT85&quot;: 1957.196982,
+        &quot;__v&quot;: 0
+    }</code></pre><hr id="4d27c7cd-a5f2-4dfa-b3b9-ce6497825b06"/><h3 id="984d157a-b933-4780-8b04-f655529ef442" class="">3. Data 24 Jam Edcov</h3><h3 id="780e63ad-363f-49a7-b177-aae4ba3ab090" class=""><code>GET  /api/edcov1_24hour</code></h3><h3 id="a415f976-6a59-4043-8c6e-a0ff5de49e5a" class=""><code>GET /api/edcov2_24hour</code></h3><h3 id="3ebce612-eea9-4e5b-911b-c0d9b251d3c5" class="">Deskripsi :</h3><p id="29edf576-14bb-4e2a-ac99-706b088d9214" class="">Mengambil data Edcov1 dan Edcov2 dalam 24 jam terakhir.</p><h3 id="393536a0-c3ef-4bde-9af4-6349d9ee3dcd" class="">Response</h3><pre id="1ead7b6a-86c4-486f-bba4-d8d673ca6e94" class="code code-wrap"><code>[
+        {
+            &quot;_id&quot;: &quot;651ac4123c10c5eadd51d8b6&quot;,
+            &quot;ts&quot;: &quot;2023-08-27T13:36:58.014Z&quot;,
+            &quot;humanTime&quot;: &quot;2023-08-27T13:36:58.014&quot;,
+            &quot;bmp388Pressure&quot;: 99.74990845,
+            &quot;bmp388Temp&quot;: 35.66460419,
+            &quot;bmp388ApprxAltitude&quot;: 132.0120697,
+            &quot;sht85Humi&quot;: 60.59815216,
+            &quot;sht85Temp&quot;: 31.15777969,
+            &quot;co2&quot;: 389,
+            &quot;ch4&quot;: 0,
+            &quot;H2OSHT85&quot;: 1957.196982,
+            &quot;__v&quot;: 0
+        },
+        {
+            &quot;_id&quot;: &quot;651ac4123c10c5eadd51d8b5&quot;,
+            &quot;ts&quot;: &quot;2023-08-27T13:36:57.896Z&quot;,
+            &quot;humanTime&quot;: &quot;2023-08-27T13:36:57.896&quot;,
+            &quot;bmp388Pressure&quot;: 99.75051117,
+            &quot;bmp388Temp&quot;: 35.66587067,
+            &quot;bmp388ApprxAltitude&quot;: 132.0431366,
+            &quot;sht85Humi&quot;: 60.67902374,
+            &quot;sht85Temp&quot;: 31.18448257,
+            &quot;co2&quot;: 389,
+            &quot;ch4&quot;: 0,
+            &quot;H2OSHT85&quot;: 1962.61914,
+            &quot;__v&quot;: 0
+        },
+        ...
+    ]</code></pre><hr id="8747bfa6-0559-408a-ba35-7cf72d2e5b35"/><h3 id="25c1bb91-ed2d-4c58-b1f4-8223c7889521" class="">4. Logger</h3><h3 id="dfdf5438-e0fa-4ab9-981d-b1a87621038b" class=""><code>GET  /api/logger</code></h3><h3 id="bada005a-9b39-4ac4-a704-82bad5710f57" class="">Deskripsi :</h3><p id="2b1439de-34f6-4267-8eb2-303a2a9763ba" class="">Mengambil informasi data logger.</p><h3 id="dd70c11c-7d04-4e29-a485-b27cb5e48f58" class="">Response</h3><pre id="ed2ec986-9131-4592-8c0c-cff000a51ed8" class="code code-wrap"><code>{
+        &quot;_id&quot;: &quot;651fdb28a3ec713365ac06ed&quot;,
+        &quot;time&quot;: &quot;06-10-2023 23:00:00&quot;,
+        &quot;cpu_usage&quot;: 4.81344537815126,
+        &quot;mem_gpu&quot;: 76,
+        &quot;mem_arm&quot;: 948,
+        &quot;temp&quot;: 37.61697478991601,
+        &quot;createdAt&quot;: &quot;2023-10-06T10:02:16.794Z&quot;,
+        &quot;updatedAt&quot;: &quot;2023-10-06T10:02:16.794Z&quot;,
+        &quot;__v&quot;: 0
+    }</code></pre><hr id="27103edf-05d4-4a7b-a4b9-00eca06d215f"/><h3 id="f1ebe9b5-3929-4608-86f5-ea6dbd7f6a40" class="">5. Rata-rata Logger</h3><h3 id="b3750c28-a024-45ee-99df-7e6a91cb259f" class=""><code>GET  /api/avglogger</code></h3><h3 id="2331ed52-2b43-42f7-8d75-d0451f0275e6" class="">Deskripsi :</h3><p id="a72e2ca1-d3a0-492e-b3ae-bd0088384196" class="">Mengambil informasi data logger selama 24 jam.</p><h3 id="4c7eaf33-dc82-4c41-8b02-85258fd82704" class="">Response</h3><pre id="b27d2e8e-a6d8-4618-95ff-7eb411751cac" class="code code-wrap"><code>{
+        &quot;count&quot;: 38,
+        &quot;data&quot;: [
+            {
+                &quot;_id&quot;: &quot;651fdb28a3ec713365ac06ed&quot;,
+                &quot;time&quot;: &quot;06-10-2023 23:00:00&quot;,
+                &quot;cpu_usage&quot;: 4.81344537815126,
+                &quot;mem_gpu&quot;: 76,
+                &quot;mem_arm&quot;: 948,
+                &quot;temp&quot;: 37.61697478991601,
+                &quot;createdAt&quot;: &quot;2023-10-06T10:02:16.794Z&quot;,
+                &quot;updatedAt&quot;: &quot;2023-10-06T10:02:16.794Z&quot;,
+                &quot;__v&quot;: 0
+            },
+            {
+                &quot;_id&quot;: &quot;651fdb28a3ec713365ac06ec&quot;,
+                &quot;time&quot;: &quot;06-10-2023 22:00:00&quot;,
+                &quot;cpu_usage&quot;: 3.8805555555555555,
+                &quot;mem_gpu&quot;: 76,
+                &quot;mem_arm&quot;: 948,
+                &quot;temp&quot;: 37.28222222222221,
+                &quot;createdAt&quot;: &quot;2023-10-06T10:02:16.794Z&quot;,
+                &quot;updatedAt&quot;: &quot;2023-10-06T10:02:16.794Z&quot;,
+                &quot;__v&quot;: 0
+            },
+            ...
+        ]
+    }</code></pre><hr id="ea8a1151-e2ba-43d7-9e01-d4fee21b2389"/><h3 id="2d008105-4fc2-4d0d-828a-ed941b10b84a" class="">6. Data SCC (Solar Charge Controller)</h3><h3 id="69c681e6-b84f-49c9-a688-334b6ee0f573" class=""><code>GET  /api/sccdata</code></h3><h3 id="0d5954a9-f546-424c-b45b-093c9a16a58f" class="">Deskripsi :</h3><p id="985dcc81-23d0-43d7-bf2e-c9df0bd1ad80" class="">Mengambil informasi data SCC terakhir.</p><h3 id="71ddaae0-24e1-404b-a84f-bd26d6972495" class="">Response</h3><pre id="480cdacb-9503-4cc4-9ef6-a61114c82a51" class="code code-wrap"><code>{
+        &quot;_id&quot;: &quot;651edca8b5478d90d4251d99&quot;,
+        &quot;ts&quot;: &quot;25-07-2023 14:25:57&quot;,
+        &quot;humanTime&quot;: &quot;2023/07/25 14:25:57&quot;,
+        &quot;PV_Voltage&quot;: 64.28,
+        &quot;PV_Current&quot;: 0.36,
+        &quot;PV_Power&quot;: 23.72,
+        &quot;Battery_Voltage&quot;: 55.18,
+        &quot;Battery_Charge_Current&quot;: 0.43,
+        &quot;Battery_Charge_Power&quot;: 23.18,
+        &quot;Load_Current&quot;: 0.32,
+        &quot;Load_Power&quot;: 17.67,
+        &quot;Battery_Remaining_Percentage&quot;: 99,
+        &quot;Battery_Temperature&quot;: 0,
+        &quot;Battery_Discharge_Current&quot;: 0.1,
+        &quot;createdAt&quot;: &quot;2023-10-05T15:56:24.389Z&quot;,
+        &quot;updatedAt&quot;: &quot;2023-10-05T15:56:24.389Z&quot;,
+        &quot;__v&quot;: 0
+    }</code></pre><hr id="16432509-7933-4c66-8e85-c075c7035e14"/><h3 id="b8731f8a-a34e-4bad-800c-982ba23e41d2" class="">7. Data Rata-rata SCC (Solar Charge Controller)</h3><h3 id="40a59155-4ec3-4ac6-9697-19e62bf3c166" class=""><code>GET  /api/sccavgdata</code></h3><h3 id="7d9cd821-2410-472c-a284-6d5c5b800f4b" class="">Deskripsi :</h3><p id="ef082a43-f13f-4781-ab98-ee7ea2abedab" class="">Mengambil informasi data SCC rata-rata dalam 24 jam.</p><h3 id="7a023ca0-475b-4eb6-8c4e-66b122d6850d" class="">Response</h3><pre id="a2ab7b90-3901-4da6-be5c-cecb56045370" class="code code-wrap"><code>{
+        &quot;count&quot;: 87,
+        &quot;data&quot;: [
+            {
+                &quot;_id&quot;: &quot;651edca8b5478d90d4251d99&quot;,
+                &quot;ts&quot;: &quot;2023-07-25T07:25:57.302Z&quot;,
+                &quot;humanTime&quot;: &quot;2023/07/25 14:25:57&quot;,
+                &quot;PV_Voltage&quot;: 64.28,
+                &quot;PV_Current&quot;: 0.36,
+                &quot;PV_Power&quot;: 23.72,
+                &quot;Battery_Voltage&quot;: 55.18,
+                &quot;Battery_Charge_Current&quot;: 0.43,
+                &quot;Battery_Charge_Power&quot;: 23.18,
+                &quot;Load_Current&quot;: 0.32,
+                &quot;Load_Power&quot;: 17.67,
+                &quot;Battery_Remaining_Percentage&quot;: 99,
+                &quot;Battery_Temperature&quot;: 0,
+                &quot;Battery_Discharge_Current&quot;: 0.1,
+                &quot;createdAt&quot;: &quot;2023-10-05T15:56:24.389Z&quot;,
+                &quot;updatedAt&quot;: &quot;2023-10-05T15:56:24.389Z&quot;,
+                &quot;__v&quot;: 0
+            },
+            {
+                &quot;_id&quot;: &quot;651edc0f58eacc8fc05652a0&quot;,
+                &quot;PV_Voltage&quot;: 0.22739130434782615,
+                &quot;PV_Current&quot;: 0,
+                &quot;PV_Power&quot;: 0,
+                &quot;Battery_Voltage&quot;: 51.72630434782607,
+                &quot;Battery_Charge_Current&quot;: 0,
+                &quot;Battery_Charge_Power&quot;: 0,
+                &quot;Load_Current&quot;: 0.2691304347826086,
+                &quot;Load_Power&quot;: 13.917608695652175,
+                &quot;Battery_Remaining_Percentage&quot;: 67.17391304347827,
+                &quot;Battery_Temperature&quot;: 0,
+                &quot;Battery_Discharge_Current&quot;: -0.26456521739130423,
+                &quot;createdAt&quot;: &quot;2023-10-05T15:53:51.294Z&quot;,
+                &quot;updatedAt&quot;: &quot;2023-10-05T15:53:51.294Z&quot;,
+                &quot;__v&quot;: 0
+            },
+        ...
+        ]
+    }</code></pre><hr id="74d7ab76-5b3b-40aa-bf77-ad7853be25bf"/><h3 id="e42111b3-e924-480f-9cc2-1f004165d6a2" class="">8. <strong>Data Terbaru DHT</strong></h3><h3 id="4a5e0898-0345-4c2c-949d-6f352be084aa" class=""><code>GET  /api/dht1_latest</code></h3><h3 id="9fffabd4-32d3-4c62-a0c9-f64be204ca15" class=""><code>GET  /api/dht2_latest</code></h3><h3 id="d6a74ff1-42b5-47fb-b757-d2785af8db54" class="">Deskripsi :</h3><p id="65076262-8aff-4a75-ac88-fffdf2b07e34" class="">Mengambil informasi data terbaru suhu dan kelembapan dari device1 dan device2 terakhir.</p><h3 id="49e10aaa-ed2b-4a59-bdd1-1cb12ea01a36" class="">Response</h3><pre id="4c5bc6db-3663-4425-a48a-5e0d18b1914e" class="code code-wrap"><code>{
+        &quot;_id&quot;: &quot;651295329cda1e1eac3e5f64&quot;,
+        &quot;ts&quot;: &quot;2023-07-25T07:25:57.302Z&quot;,
+        &quot;dht22Temp&quot;: 64.28,
+        &quot;dht22Humi&quot;: 0.36,
+        &quot;dht22HeatIndex&quot;: 23.72,
+        &quot;createdAt&quot;: &quot;2023-09-26T08:24:18.668Z&quot;,
+        &quot;updatedAt&quot;: &quot;2023-09-26T08:24:18.668Z&quot;,
+        &quot;__v&quot;: 0
+    }</code></pre><hr id="e5a510fe-ce72-4b7f-9521-c2483e70a7fe"/><h3 id="13860902-8f81-431d-b0b3-aece8423ec1a" class="">9. <strong>Data Rata-rata DHT Device</strong></h3><h3 id="d787e777-27ee-4dda-b970-923fcf7519d2" class=""><code>GET  /api/dht1</code></h3><h3 id="d8ece124-94de-4e42-bfe4-2ccd5ca7a5e2" class=""><code>GET  /api/dht2</code></h3><h3 id="65123df1-f705-4047-bdca-569ca5bb9571" class="">Deskripsi :</h3><p id="e71a006d-2f73-40be-928e-fa726d2a9560" class="">Mengambil informasi data selama 24 jam untuk suhu dan kelembapan dari device1 dan device2.</p><h3 id="aef3ed3e-fbef-42bb-a579-1d31e9c7bd9b" class="">Response</h3><pre id="196942b7-64fa-4d4e-b02f-171f4562894e" class="code code-wrap"><code>{
+        &quot;count&quot;: 54,
+        &quot;data&quot;: [
+            {
+                &quot;_id&quot;: &quot;651ef71a3fca4b8790a5c038&quot;,
+                &quot;ts&quot;: &quot;2023-07-25T07:25:57.302Z&quot;,
+                &quot;dht22Temp&quot;: 69.28,
+                &quot;dht22Humi&quot;: 0.36,
+                &quot;dht22HeatIndex&quot;: 23.72,
+                &quot;createdAt&quot;: &quot;2023-10-05T17:49:14.326Z&quot;,
+                &quot;updatedAt&quot;: &quot;2023-10-05T17:49:14.326Z&quot;,
+                &quot;__v&quot;: 0
+            },
+            {
+                &quot;_id&quot;: &quot;651ef70e3fca4b8790a5c036&quot;,
+                &quot;ts&quot;: &quot;2023-07-25T07:25:57.302Z&quot;,
+                &quot;dht22Temp&quot;: 64.28,
+                &quot;dht22Humi&quot;: 0.36,
+                &quot;dht22HeatIndex&quot;: 23.72,
+                &quot;createdAt&quot;: &quot;2023-10-05T17:49:02.593Z&quot;,
+                &quot;updatedAt&quot;: &quot;2023-10-05T17:49:02.593Z&quot;,
+                &quot;__v&quot;: 0
+            },
+            ...
+        ]
+    }</code></pre><hr id="2e203b80-ea3b-422e-bb6c-275e19ae60af"/><h3 id="94a0c1b1-357e-43bc-9994-707722f6c0d4" class="">10. <strong>Data Perangkat Edcov</strong></h3><h3 id="6cc8dce3-7b13-4284-ba6d-55c61340af7f" class=""><code>GET  /api/device1_edcov</code></h3><h3 id="1e8f53ce-7249-4110-a7a1-efd5afa01e2e" class=""><code>GET  /api/device2_edcov</code></h3><h3 id="61691753-36d0-4821-bf0b-25c27fc41776" class="">Deskripsi :</h3><p id="ccd43d01-2449-42a6-aafe-77cd54f415ec" class="">Mengambil informasi data device  untuk mengetahui log aktivitas dari device1 dan device2.</p><h3 id="acd66e22-3886-4e8d-b783-101cfa070776" class="">Response</h3><pre id="b9f7e22d-1bb3-4099-a498-3f53b5ce5929" class="code code-wrap"><code>[
+        {
+            &quot;_id&quot;: &quot;652160a276083d0732324d09&quot;,
+            &quot;log&quot;: &quot;2023-10-07T20:06:00.012 &gt;&gt; new client from data logged\n&quot;,
+            &quot;createdAt&quot;: &quot;2023-10-07T13:44:02.819Z&quot;,
+            &quot;updatedAt&quot;: &quot;2023-10-07T13:44:02.819Z&quot;,
+            &quot;__v&quot;: 0
+        },
+        {
+            &quot;_id&quot;: &quot;652160a276083d0732324d0a&quot;,
+            &quot;log&quot;: &quot;2023-10-07T20:29:08.632 &gt;&gt; Error in readSample() SHT85\n&quot;,
+            &quot;createdAt&quot;: &quot;2023-10-07T13:44:02.820Z&quot;,
+            &quot;updatedAt&quot;: &quot;2023-10-07T13:44:02.820Z&quot;,
+            &quot;__v&quot;: 0
+        },
+        ...
+    ]</code></pre><hr id="b5fcb06d-dd44-4596-962d-76419d99ada7"/><h3 id="a4f59314-16f9-4225-ba12-a347d15c2b0d" class="">11. <strong>Rata-Rata Data Edcov</strong></h3><h3 id="23c5eff9-6260-4f76-82d2-0ea710abab9e" class=""><code>GET  /api/edcov1_avg</code> </h3><h3 id="72e049ce-6a54-4f46-814c-3970efdf632c" class=""><code>GET  /api/edcov2_avg</code></h3><h3 id="088bbe3d-96b7-4207-9d34-e0b72bd88b10" class="">Deskripsi :</h3><p id="3c73a6fa-54f0-40bc-859f-3471c2022aa7" class="">Mengambil informasi rata-rata data edcov  untuk disajikan dalam frontend dari device1 dan device2.</p><h3 id="5bd231a2-e611-415e-9b8e-3ab15422e700" class="">Response</h3><pre id="9af7f1e3-ceb2-440b-9001-70165dae31f4" class="code code-wrap"><code>[
+        {
+            &quot;_id&quot;: &quot;651ac4123c10c5eadd51d8b6&quot;,
+            &quot;ts&quot;: &quot;2023-08-27T13:36:58.014Z&quot;,
+            &quot;humanTime&quot;: &quot;2023-08-27T13:36:58.014&quot;,
+            &quot;bmp388Pressure&quot;: 99.74990845,
+            &quot;bmp388Temp&quot;: 35.66460419,
+            &quot;bmp388ApprxAltitude&quot;: 132.0120697,
+            &quot;sht85Humi&quot;: 60.59815216,
+            &quot;sht85Temp&quot;: 31.15777969,
+            &quot;co2&quot;: 389,
+            &quot;ch4&quot;: 0,
+            &quot;H2OSHT85&quot;: 1957.196982,
+            &quot;__v&quot;: 0
+        },
+        {
+            &quot;_id&quot;: &quot;651ac4123c10c5eadd51d8b5&quot;,
+            &quot;ts&quot;: &quot;2023-08-27T13:36:57.896Z&quot;,
+            &quot;humanTime&quot;: &quot;2023-08-27T13:36:57.896&quot;,
+            &quot;bmp388Pressure&quot;: 99.75051117,
+            &quot;bmp388Temp&quot;: 35.66587067,
+            &quot;bmp388ApprxAltitude&quot;: 132.0431366,
+            &quot;sht85Humi&quot;: 60.67902374,
+            &quot;sht85Temp&quot;: 31.18448257,
+            &quot;co2&quot;: 389,
+            &quot;ch4&quot;: 0,
+            &quot;H2OSHT85&quot;: 1962.61914,
+            &quot;__v&quot;: 0
+        },
+        ...
+    ]</code></pre><hr id="645f1dec-8b3c-47a9-b2ef-c4eb6584eba8"/><p id="639ea496-ccad-4155-9179-d15046008a90" class="">
+    </p><h2 id="00e14bf5-43a1-4e39-a140-02463dcfa776" class="">Errors</h2><p id="4d7530b8-ee35-4fbc-b2ed-3c0bf9cce9e9" class="">This API uses the following error codes:</p><ul id="a8bb7733-4b1f-4cdd-953f-7fd2710b68ec" class="bulleted-list"><li style="list-style-type:disc"><code>401 Unauthorized</code>: Authorization required.</li></ul><ul id="2a291b59-5122-4db3-b935-a7f04a13cac8" class="bulleted-list"><li style="list-style-type:disc"><code>404 Not Found</code>: Data tidak ditemukan.</li></ul><ul id="6b9f02ab-7de1-4760-9c8f-c7a639d03021" class="bulleted-list"><li style="list-style-type:disc"><code>500 Internal Server Error</code>: Terjadi kesalahan saat mengambil data.</li></ul><p id="ae46474e-00f2-4858-be39-ee7c24bb8d00" class="">
+    </p></div></article></body></html>
